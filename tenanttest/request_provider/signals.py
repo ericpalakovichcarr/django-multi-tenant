@@ -30,4 +30,7 @@ class SingleHandlerSignal(Signal):
 request_accessor = SingleHandlerSignal()
 
 def get_request():
-    return request_accessor.send(None)[0][1]
+    try:
+        return request_accessor.send(None)[0][1]
+    except IndexError:
+        return None
