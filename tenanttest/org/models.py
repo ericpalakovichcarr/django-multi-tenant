@@ -1,9 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from tenant.models import TenantModel
 from tenant.decorators import tenant_restricted
 
-@tenant_restricted
-class Organization(models.Model):
+class Organization(TenantModel):
     name = models.CharField(max_length=100)
     _tenant_manager = models.Manager()
     def __unicode__(self):
@@ -11,4 +11,4 @@ class Organization(models.Model):
 
 @tenant_restricted
 class User(AbstractUser):
-    organization = models.ForeignKey(Organization, null=True, blank=True, editable=False)
+    organization = models.ForeignKey(Organization, null=True, blank=True)

@@ -26,13 +26,10 @@ def get_tenant_from_request(request=None):
     request = request or get_request()
     if request:
         tenant_model = get_tenant_model()
-        user_id_field = '%s__id' % tenant_model.get_auth_user_field_name()
+        user_id_field = '%s__id' % tenant_model._get_auth_user_field_name()
 
         # Query for a tenant who has the user defined in the request's session
         tenant_qs = tenant_model._tenant_manager.filter(**{user_id_field:request.session.get('_auth_user_id')})
         num_tenants = tenant_qs.count()
         if num_tenants == 1:
             return tenant_qs.get()
-        elif num_tenants > 1:
-            raise ImproperlyConfigured("%s should only have one %s ForeignKey defined. Found %s!" %
-                                       (settings.AUTH_USER_MODEL, settings.TENANT_MODEL, num_tenants))
