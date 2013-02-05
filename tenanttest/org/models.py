@@ -5,7 +5,6 @@ from tenant.decorators import tenant_restricted
 
 class Organization(TenantModel):
     name = models.CharField(max_length=100)
-    _tenant_manager = models.Manager()
     def __unicode__(self):
         return self.name
 
